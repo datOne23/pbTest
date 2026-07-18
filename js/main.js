@@ -1,6 +1,6 @@
 // Main application logic for Page Builder
 
-import { FONT_LIST } from './constants.js';
+import { FONT_LIST, ANCHOR_STYLES, DEVICE_SCALES } from './constants.js';
 import { 
     getState, getHistory, setHistory, pushHistory, restoreSnapshot, 
     undo as undoState, redo as redoState, uid, dataURLToBlob,
@@ -11,24 +11,6 @@ import {
 } from './state.js';
 import { createElement, createCanvas, showCanvasInBuffer, handleButtonAction, updateBoxColumns } from './elements.js';
 import { getDeviceScale, getAnchorStyles, setupElementDrag, showContextMenu } from './render.js';
-
-const ANCHOR_STYLES = {
-    'tl': { justifyContent: 'flex-start', alignItems: 'flex-start' },
-    'tc': { justifyContent: 'center', alignItems: 'flex-start' },
-    'tr': { justifyContent: 'flex-end', alignItems: 'flex-start' },
-    'ml': { justifyContent: 'flex-start', alignItems: 'center' },
-    'mc': { justifyContent: 'center', alignItems: 'center' },
-    'mr': { justifyContent: 'flex-end', alignItems: 'center' },
-    'bl': { justifyContent: 'flex-start', alignItems: 'flex-end' },
-    'bc': { justifyContent: 'center', alignItems: 'flex-end' },
-    'br': { justifyContent: 'flex-end', alignItems: 'flex-end' },
-};
-
-const DEVICE_SCALES = {
-    'desktop': 0.4,
-    'tablet': 0.5,
-    'phone': 0.6
-};
 
 let dragState = null;
 let isResizing = false;

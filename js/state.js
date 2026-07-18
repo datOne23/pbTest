@@ -210,6 +210,14 @@ export function getContainingLayer(elId) {
     return null;
 }
 
+export function getBufferLayer(canvas) {
+    return canvas.layers.find(l => l.isBuffer);
+}
+
+export function cloneElements(elements) {
+    return JSON.parse(JSON.stringify(elements));
+}
+
 export function removeElement(elId) {
     const container = getElementContainer(elId);
     if (!container) return false;
