@@ -1758,10 +1758,6 @@ function renderLayersPanel() {
 function renderPackages() {
     packagesList.innerHTML = '';
     if (state.packages.length === 0) {
-// -------- PACKAGES --------
-function renderPackages() {
-    packagesList.innerHTML = '';
-    if (state.packages.length === 0) {
         const empty = document.createElement('div');
         empty.className = 'text-muted';
         empty.textContent = 'No packages yet';
@@ -1800,4 +1796,5 @@ function renderPackages() {
         packagesList.appendChild(item);
     }
 }
+
 
