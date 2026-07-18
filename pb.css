@@ -108,6 +108,11 @@
             padding: 3px 8px;
             white-space: nowrap;
         }
+        #toolbar .group button.active {
+            background: #3a5a7a;
+            border-color: #4a6a8a;
+            color: #fff;
+        }
         #toolbar .group select {
             font-size: 11px;
             padding: 2px 4px;
