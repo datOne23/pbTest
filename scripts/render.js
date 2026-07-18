@@ -1801,7 +1801,3 @@ function renderPackages() {
     }
 }
 
-// -------- PROPERTIES --------
-function addScrubber(input, onChange) {
-    let isScrubbing = false;
-    let startX, startVal, timer;

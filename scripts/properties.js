@@ -842,3 +842,11 @@ function selectElement(id) {
     renderProperties();
     renderLayersPanel();
     if (!selectionPending) {
+        selectionPending = true;
+        requestAnimationFrame(() => {
+            selectionPending = false;
+            renderCanvases();
+        });
+    }
+}
+
