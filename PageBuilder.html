@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page Builder</title>
+</head>
+<body>
+    <div id="toolbar">
+        <div class="group">
+            <button id="btn-save" title="Save Project">Save</button>
+            <button id="btn-open" title="Open Project">Open</button>
+            <button id="btn-export" title="Export HTML">Export HTML</button>
+            <button id="btn-export-zip" title="Export with Assets (ZIP)">Export ZIP</button>
+        </div>
+        <div class="separator"></div>
+        <div class="group">
+            <button id="btn-preview" title="Live Preview">Preview</button>
+        </div>
+        <div class="separator"></div>
+        <div class="group">
+            <label>Palette</label>
+            <div class="palette-items" id="palette-items">
+                <span class="palette-item" data-type="box">Box</span>
+                <span class="palette-item" data-type="dynamic-box">Dynamic Box</span>
+                <span class="palette-item" data-type="text">Text</span>
+                <span class="palette-item" data-type="media">Media</span>
+                <span class="palette-item" data-type="media-grid">Media Grid</span>
+                <span class="palette-item" data-type="button">Button</span>
+            </div>
+        </div>
+        <div class="separator"></div>
+        <div class="group">
+            <label>Style</label>
+            <select id="style-selector"><option value="">—</option></select>
+            <button id="btn-style-new">New</button>
+        </div>
+        <div class="separator"></div>
+        <div class="group">
+            <label>Device</label>
+            <button id="dev-desktop" class="active">Desktop</button>
+            <button id="dev-tablet">Tablet</button>
+            <button id="dev-phone">Phone</button>
+        </div>
+        <div class="separator"></div>
+        <div class="group">
+            <button id="btn-add-canvas">+ Canvas</button>
+            <button id="btn-add-package">+ Package</button>
+        </div>
+    </div>
+    <div id="workspace">
+        <div id="canvas-container">
+            <div id="canvas-scroll"></div>
+        </div>
+    </div>
+    <div class="floating-panel" id="panel-layers">
+        <div class="panel-header">
+            <span class="ptitle">Layers</span>
+            <div class="pcontrols">
+                <button class="btn-minimize">_</button>
+            </div>
+        </div>
+        <div class="panel-body" id="layers-list"></div>
+    </div>
+    <div class="floating-panel" id="panel-packages">
+        <div class="panel-header">
+            <span class="ptitle">Packages</span>
+            <div class="pcontrols">
+                <button class="btn-minimize">_</button>
+            </div>
+        </div>
+        <div class="panel-body" id="packages-list"></div>
+    </div>
+    <div class="floating-panel" id="panel-properties">
+        <div class="panel-header">
+            <span class="ptitle">Properties</span>
+            <div class="pcontrols">
+                <button class="btn-minimize">_</button>
+            </div>
+        </div>
+        <div class="panel-body" id="properties-content">
+            <div class="text-muted">Select an element to edit</div>
+        </div>
+    </div>
+    <div class="floating-panel" id="panel-assets">
+        <div class="panel-header">
+            <span class="ptitle">Assets</span>
+            <div class="pcontrols">
+                <button class="btn-minimize">_</button>
+            </div>
+        </div>
+        <div class="panel-body" id="assets-list">
+            <div class="text-muted" style="margin-bottom:4px;">Drop files here or use buttons</div>
+            <div style="display:flex;gap:4px;margin-bottom:6px;">
+                <button id="btn-asset-file">Add File</button>
+                <button id="btn-asset-link">Add Link</button>
+            </div>
+            <div id="asset-items-container"></div>
+        </div>
+    </div>
+    <div id="preview-overlay">
+        <div class="preview-frame">
+            <button class="preview-close" id="preview-close">&times;</button>
+            <div id="preview-content"></div>
+        </div>
+    </div>
+    <div id="lightbox"><img id="lightbox-img" src="" alt="" /></div>
+    <div id="context-menu">
+        <div class="menu-item" data-action="delete">Delete</div>
+        <div class="menu-item" data-action="bring-forward">Bring Forward</div>
+        <div class="menu-item" data-action="send-backward">Send Backward</div>
+        <div class="menu-item" data-action="bring-to-front">Bring to Front</div>
+        <div class="menu-item" data-action="send-to-back">Send to Back</div>
+        <div class="menu-divider"></div>
+        <div class="menu-item" data-action="mark-main">Mark as Main Canvas</div>
+    </div>
+</body>
+</html>
