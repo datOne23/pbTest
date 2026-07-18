@@ -115,15 +115,7 @@
         <div class="menu-divider"></div>
         <div class="menu-item" data-action="mark-main">Mark as Main Canvas</div>
     </div>
-    <script type="module">
-        import { init } from './js/main.js';
-        
-        // Initialize the page builder when DOM is ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', init);
-        } else {
-            init();
-        }
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="pb.js"></script>
 </body>
 </html>
