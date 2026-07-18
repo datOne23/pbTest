@@ -1,0 +1,95 @@
+- Create a Page Builder with Client-side SPA with the following specs:
+	- additional instructions
+		- do not use emojis
+		- Page Builder must be created using html, css, javascript
+		- colors/theme is darkmode
+	- can create a single html file containing both javascript and css
+	- can create a folder on where the html can reference assets
+	- can create the illusion of multiple pages within a static page
+	- has reusable Styles for element properties
+	- has a floating panels that can be minimized, moved and resized
+		- has a dedicated panel for a property editor for Elements
+		- has a dedicated panel for Elements Layers
+			- ~~~~only show layers of current active/selected Canvas
+			- can add layers in a canvas. for example: you can overlap a text infront of an image.
+				- how this works: a layer is like having a canvas stacked together. when a layer is selected, you can add or remove elements in it
+				- all listed items in the layer panel can be rearranged by dragging them
+				- on the top on the layer panel, there is a button to add layers
+		- has a dedicated panel for Packages
+		- has a dedicated panel for Assets
+			- assets can be images, video, and fonts
+			- you drag and drop assets here directly from the desktop or whatever
+			- there is a button to add assets from file
+			- there is a button to add assets from links
+			- you can drag and drop assets to Elements to fill them or replace their content.
+	- can export a zip file of the html file along the assets
+	- has a dedicated toolbar for saving and opening project files, export, selection tools, Elements Palettes where you could drag and drop it to a canvas, a Style selector and creator with a category based on what kind of Element it is. The toolbar also has a button that opens a live preview for the page.
+	- has a right click menu
+		- the menu can: delete selected element, bring element to front or back by switching their layer order(a new layer will be created if there's none), mark Canvas as main canvas
+	- an undo and redo function. ctrl z to undo, ctrl shift z to redo.
+	- can select Elements on the canvas by just left clicking them
+	- canvas similar to photoshop artboard where you could put multiple canvases side by side
+		- each canvas can have their resolution be customized via Height and Width.
+		- there will only be 1 canvas by default called "main" which has a default resolution of 1920x1080
+			- you can delete a main canvas but wont let you so when there's only a single main canvas left
+		- canvases will automatically adapt its layout depending on the screen size.
+		- Canvases has three categories: Main Page, Page, and Package
+			- main is the default Main Page.
+			- Pages and Packages can be renamed
+			- Packages cannot be defined by resolution. A package is a Box
+		- background color can be set via color picker
+	- workspace navigation using middle mouse button to move and scrollwheel to zoom in and out
+	- automatic layout detection for desktop, tablet, and phone
+	- Package(grouped elements or a canvas)
+		- grouped elements is either contained on a box or from a canvas
+	- drag and drop function for Elements
+		- Elements can be drag and drop and will stack from top to bottom. Placing Elements works similar to Cardd, Webflow, or Webstudio where you can place an Element before or after
+	- layer system for Elements and Packages
+		- a function to bring Elements or Packages forward and backward
+	- Elements. Can be inserted before or after an Element when using drag and drop. Placing Elements works as if you are coding it from top to bottom. each element can have it's alignment set to left, center, right.
+		- Box
+			- you put Elements or Packages here via drag and drop
+			- a Box contains a Grid and a Column
+				- default value for Grid is 1 for rows and 1 for columns. values cannot go below 1, and there is no maximum limit.
+				- a Column has default amount of columns of 3. By default, it's proportion are always even unless proportioned column is ticked.
+					- proportioned column: an option that can be ticked.
+						- can be proportioned similar to how columns work in Cardd. example: size for column 1 is 40%; column 2, 20%; column 3, 40%.
+			- a Box has an adjustable margin
+			- Column and Grid has an adjustable padding
+			- can be nested
+		- Dynamic Box
+			- can only contain Packages
+			- has an id that can be used by a button
+			- has an option to automatically adapt its margin and padding depending on the margin and padding specified by the Package
+			- can set what's the default Package inside the Dynamic Box
+		- Text
+			- Can get fonts via google fonts
+			- can set tracking
+			- can set text spacing and paragraph spacing
+			- can set alignment and justify for: left, center, right
+			- can set if it's underlined, bold, italic, regular
+			- can set font size
+			- can set highlight
+			- can set color
+		- Image
+			- size can be adjusted to be crop to fit or fit inside a Box
+			- has an adjustable margin. 0 by default
+			- can set corner rounding. 0 by default
+		- Image Grid
+			- can add multiple images that will be displayed to a grid
+			- if an image is clicked, show an enlarged version of it on the screen. to exit, you just click anywhere
+			- has option to either use Grid or Masonry Layout
+			- functions similar to Grid but for images
+				- size can be adjusted to be crop to fit or fit inside a Box
+				- margin for images can be set
+			- if Masonry Layout is ticked, the grid will dynamically adopt to the images' height and width
+			- can set corner rounding of all images. 0 by default
+			- can set margin of all images
+		- Button
+			- a button can contain a Text or Image
+			- it's click function can be set to either: open a link in new tab, switch page by changing Canvas via specified name, or change the Package contained in a Dynamic Box using its id and also specifying the name of the Package to be put on the Dynamic Box
+				- when switching to a page(since it's a static page and can't have multiple real pages) create an overlay of the choosen Canvas)
+			- a drop down menu to choose which canvas to switch
+			- can can set corner rounding. 0 by default
+			- can set color
+			- can set border size and color
