@@ -1,5 +1,5 @@
 // ============================================================
-// RENDERER - Part 1 (Canvases, Layers, Packages, Properties)
+// RENDERER - Merged & Fixed (Canvases, Layers, Packages, Properties, Preview)
 // ============================================================
 
 (function() {
@@ -30,7 +30,7 @@
     } = window.__PB_MANIP;
     const { createElement, createCanvas, updateBoxColumns } = window.__PB_CREATOR;
     const { renderAssets, addAssetFile, addAssetLink, handleAssetDrop, FONT_LIST } = window.__PB_ASSETS;
-    const { pushHistory } = window.__PB_HISTORY;
+    const { pushHistory, undo, redo } = window.__PB_HISTORY;
 
     const container = document.getElementById('canvas-scroll');
     const layersList = document.getElementById('layers-list');
@@ -418,17 +418,7 @@
         }
     }
 
-    // Continue in Part 2...
-
-// ============================================================
-// RENDERER - Part 2 (Element Rendering & Drag)
-// ============================================================
-
-(function() {
-    'use strict';
-
-    // Continue from Part 1...
-
+    // ---- ELEMENT DRAG ----
     function setupElementDrag(elDiv, el) {
         let holdTimer = null;
         let isHeld = false;
@@ -1329,16 +1319,7 @@
         return div;
     }
 
-    // Continue in Part 3...
-// ============================================================
-// RENDERER - Part 3 (Layers Panel, Packages, Properties, Preview)
-// ============================================================
-
-(function() {
-    'use strict';
-
-    // Continue from Part 2...
-
+    // ---- LAYERS PANEL ----
     function renderElementTree(elements, layerId, depth, parentEl) {
         let html = '';
         for (const el of elements) {
@@ -1765,6 +1746,7 @@
         });
     }
 
+    // Fixed: accept el parameter
     function renderAnchorPicker(el) {
         const parent = getParentElement(el.id);
         const isInsideColumn = parent && parent.type === 'column';
@@ -1806,6 +1788,7 @@
         return container;
     }
 
+    // Fixed: accept el parameter
     function renderSizeAdjust(el) {
         const group = document.createElement('div');
         group.className = 'prop-group';
@@ -1869,7 +1852,8 @@
         return group;
     }
 
-    function renderMarginPadding(labelPrefix, keyPrefix) {
+    // Fixed: accept el parameter
+    function renderMarginPadding(el, labelPrefix, keyPrefix) {
         const isMargin = keyPrefix === 'margin';
         const group = document.createElement('div');
         group.className = 'prop-group';
@@ -2154,20 +2138,20 @@
                 }
             }
 
-            propertiesContent.appendChild(renderMarginPadding('Margin', 'margin'));
-            propertiesContent.appendChild(renderMarginPadding('Padding', 'padding'));
+            propertiesContent.appendChild(renderMarginPadding(el, 'Margin', 'margin'));
+            propertiesContent.appendChild(renderMarginPadding(el, 'Padding', 'padding'));
             propertiesContent.appendChild(renderProp('Background', 'bgColor', 'color'));
             propertiesContent.appendChild(renderProp('Border Thickness', 'borderSize', 'number'));
             propertiesContent.appendChild(renderProp('Border Color', 'borderColor', 'color'));
             propertiesContent.appendChild(renderProp('Border Opacity (0-100)', 'borderOpacity', 'number'));
             propertiesContent.appendChild(renderProp('Border Style', 'borderStyle', 'select', ['solid', 'dashed', 'dotted']));
         } else if (el.type === 'column') {
-            propertiesContent.appendChild(renderMarginPadding('Padding', 'padding'));
+            propertiesContent.appendChild(renderMarginPadding(el, 'Padding', 'padding'));
             propertiesContent.appendChild(renderProp('Background', 'bgColor', 'color'));
         } else if (el.type === 'dynamic-box') {
             propertiesContent.appendChild(renderProp('ID', 'id', 'text'));
-            propertiesContent.appendChild(renderMarginPadding('Margin', 'margin'));
-            propertiesContent.appendChild(renderMarginPadding('Padding', 'padding'));
+            propertiesContent.appendChild(renderMarginPadding(el, 'Margin', 'margin'));
+            propertiesContent.appendChild(renderMarginPadding(el, 'Padding', 'padding'));
             const pkgSelect = document.createElement('div');
             pkgSelect.className = 'prop-group';
             const lbl = document.createElement('label');
@@ -2241,8 +2225,8 @@
             propertiesContent.appendChild(renderProp('Line Height', 'lineHeight', 'number'));
             propertiesContent.appendChild(renderProp('Highlight', 'highlight', 'color'));
             propertiesContent.appendChild(renderProp('Text Decoration', 'textDecoration', 'select', ['none', 'underline', 'line-through']));
-            propertiesContent.appendChild(renderMarginPadding('Margin', 'margin'));
-            propertiesContent.appendChild(renderMarginPadding('Padding', 'padding'));
+            propertiesContent.appendChild(renderMarginPadding(el, 'Margin', 'margin'));
+            propertiesContent.appendChild(renderMarginPadding(el, 'Padding', 'padding'));
         } else if (el.type === 'media') {
             propertiesContent.appendChild(renderProp('Media URL', 'src', 'text'));
             propertiesContent.appendChild(renderProp('Alt Text', 'alt', 'text'));
@@ -2257,7 +2241,7 @@
             propertiesContent.appendChild(renderProp('Width (CSS)', 'width', 'text'));
             propertiesContent.appendChild(renderProp('Height (CSS)', 'height', 'text'));
             propertiesContent.appendChild(renderProp('Fit', 'fit', 'select', ['fit', 'crop']));
-            propertiesContent.appendChild(renderMarginPadding('Margin', 'margin'));
+            propertiesContent.appendChild(renderMarginPadding(el, 'Margin', 'margin'));
             const radiusGroup = document.createElement('div');
             radiusGroup.className = 'prop-group';
             const rlbl = document.createElement('label');
@@ -2411,10 +2395,11 @@
             irow.appendChild(clearBtn);
             imgGroup.appendChild(irow);
             propertiesContent.appendChild(imgGroup);
-            propertiesContent.appendChild(renderMarginPadding('Margin', 'margin'));
-            propertiesContent.appendChild(renderMarginPadding('Padding', 'padding'));
+            propertiesContent.appendChild(renderMarginPadding(el, 'Margin', 'margin'));
+            propertiesContent.appendChild(renderMarginPadding(el, 'Padding', 'padding'));
         } else if (el.type === 'button') {
             propertiesContent.appendChild(renderProp('Action', 'action', 'select', ['link', 'page', 'dynamic']));
+            // Page group – we keep a reference to toggle visibility later
             const pageGroup = document.createElement('div');
             pageGroup.className = 'prop-group';
             const pageLbl = document.createElement('label');
@@ -2442,31 +2427,28 @@
             pageRow.appendChild(pageSel);
             pageGroup.appendChild(pageRow);
             propertiesContent.appendChild(pageGroup);
-            if (el.action !== 'page') {
-                pageGroup.style.display = 'none';
-            }
+
             // Show/hide page group based on action selection
-            const selects = propertiesContent.querySelectorAll('select');
+            const actionSelects = propertiesContent.querySelectorAll('select');
             let actionSelectEl = null;
-            for (const sel of selects) {
+            for (const sel of actionSelects) {
                 if (sel.parentElement.parentElement.querySelector('label')?.textContent === 'Action') {
                     actionSelectEl = sel;
                     break;
                 }
             }
             if (actionSelectEl) {
+                // Initially set visibility
+                pageGroup.style.display = (el.action === 'page') ? 'block' : 'none';
                 actionSelectEl.addEventListener('change', function() {
                     const val = this.value;
-                    const pageGroupEl = propertiesContent.querySelector(
-                        '.prop-group:has(label:contains("Canvas (page)"))');
-                    if (pageGroupEl) {
-                        pageGroupEl.style.display = (val === 'page') ? 'block' : 'none';
-                    }
+                    pageGroup.style.display = (val === 'page') ? 'block' : 'none';
                     el.action = val;
                     renderAll();
                     pushHistory();
                 });
             }
+
             propertiesContent.appendChild(renderProp('Action URL (link)', 'actionUrl', 'text'));
             propertiesContent.appendChild(renderProp('Target (link)', 'actionTarget', 'select', ['_blank', '_self', '_parent', '_top']));
             propertiesContent.appendChild(renderProp('Dynamic Box ID', 'actionDynamicBox', 'text'));
@@ -2480,8 +2462,8 @@
             propertiesContent.appendChild(renderProp('Width (CSS)', 'width', 'text'));
             propertiesContent.appendChild(renderProp('Height (CSS)', 'height', 'text'));
             propertiesContent.appendChild(renderProp('Font Size', 'fontSize', 'number'));
-            propertiesContent.appendChild(renderMarginPadding('Margin', 'margin'));
-            propertiesContent.appendChild(renderMarginPadding('Padding', 'padding'));
+            propertiesContent.appendChild(renderMarginPadding(el, 'Margin', 'margin'));
+            propertiesContent.appendChild(renderMarginPadding(el, 'Padding', 'padding'));
         }
 
         // Style class selector
@@ -2534,16 +2516,6 @@
         delGroup.appendChild(delRow);
         propertiesContent.appendChild(delGroup);
     }
-
-    // Continue in Part 4...
-// ============================================================
-// RENDERER - Part 4 (Preview, Context Menu, Zoom/Pan, Export, Init)
-// ============================================================
-
-(function() {
-    'use strict';
-
-    // Continue from Part 3...
 
     // ---- BUTTON ACTION HANDLER ----
     function handleButtonAction(el) {
@@ -2870,7 +2842,7 @@
             hideContextMenu();
         });
 
-        // Keyboard shortcuts
+        // Keyboard shortcuts (now undo/redo are in scope)
         document.addEventListener('keydown', (e) => {
             if (e.ctrlKey && e.key === 'z' && !e.shiftKey) {
                 e.preventDefault();
