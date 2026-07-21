@@ -437,39 +437,45 @@
             hasMoved = false;
             isHeld = false;
 
+            // Don't start drag timer immediately - allow click to work first
             holdTimer = setTimeout(() => {
-                isHeld = true;
-                const rect = elDiv.getBoundingClientRect();
-                const clone = elDiv.cloneNode(true);
-                clone.style.position = 'fixed';
-                clone.style.left = rect.left + 'px';
-                clone.style.top = rect.top + 'px';
-                clone.style.width = rect.width + 'px';
-                clone.style.height = rect.height + 'px';
-                clone.style.pointerEvents = 'none';
-                clone.style.zIndex = '9999';
-                clone.style.opacity = '0.85';
-                clone.style.transform = 'scale(1.05)';
-                clone.style.boxShadow = '0 8px 32px rgba(0,0,0,0.7)';
-                clone.style.borderRadius = '4px';
-                clone.style.overflow = 'hidden';
-                document.body.appendChild(clone);
+                // Check if we've moved significantly before starting drag
+                const dx = e.clientX - startX;
+                const dy = e.clientY - startY;
+                if (Math.sqrt(dx * dx + dy * dy) < 8) {
+                    isHeld = true;
+                    const rect = elDiv.getBoundingClientRect();
+                    const clone = elDiv.cloneNode(true);
+                    clone.style.position = 'fixed';
+                    clone.style.left = rect.left + 'px';
+                    clone.style.top = rect.top + 'px';
+                    clone.style.width = rect.width + 'px';
+                    clone.style.height = rect.height + 'px';
+                    clone.style.pointerEvents = 'none';
+                    clone.style.zIndex = '9999';
+                    clone.style.opacity = '0.85';
+                    clone.style.transform = 'scale(1.05)';
+                    clone.style.boxShadow = '0 8px 32px rgba(0,0,0,0.7)';
+                    clone.style.borderRadius = '4px';
+                    clone.style.overflow = 'hidden';
+                    document.body.appendChild(clone);
 
-                dragState = {
-                    element: el,
-                    clone: clone,
-                    offsetX: e.clientX - rect.left,
-                    offsetY: e.clientY - rect.top,
-                    startX: e.clientX,
-                    startY: e.clientY,
-                    target: null,
-                    position: 'inside'
-                };
+                    dragState = {
+                        element: el,
+                        clone: clone,
+                        offsetX: e.clientX - rect.left,
+                        offsetY: e.clientY - rect.top,
+                        startX: e.clientX,
+                        startY: e.clientY,
+                        target: null,
+                        position: 'inside'
+                    };
 
-                elDiv.style.opacity = '0.3';
+                    elDiv.style.opacity = '0.3';
 
-                document.addEventListener('pointermove', onDragMove);
-                document.addEventListener('pointerup', onDragEnd);
+                    document.addEventListener('pointermove', onDragMove);
+                    document.addEventListener('pointerup', onDragEnd);
+                }
             }, 400);
         });
 
