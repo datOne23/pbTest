@@ -2517,23 +2517,42 @@
         for (const asset of state.assets) {
             const item = document.createElement('div');
             item.className = 'asset-item';
-            const icon = document.createElement('span');
-            icon.textContent = asset.type === 'image' ? '🖼️' : asset.type === 'video' ? '🎬' : '🔤';
-            item.appendChild(icon);
+            item.draggable = true;
+            item.dataset.assetId = asset.id;
+            
+            const thumb = document.createElement('img');
+            thumb.className = 'asset-thumb';
+            if (asset.type === 'image' || asset.type === 'video') {
+                thumb.src = asset.url || '';
+            } else {
+                thumb.src =
+                    'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="%23666" stroke-width="2"%3E%3Cpath d="M4 7h16M4 12h16M4 17h10"/%3E%3C/svg%3E';
+            }
+            item.appendChild(thumb);
+            
             const nameSpan = document.createElement('span');
+            nameSpan.className = 'asset-name';
             nameSpan.textContent = asset.name;
             item.appendChild(nameSpan);
-            item.draggable = true;
+            
             item.addEventListener('dragstart', (e) => {
                 e.dataTransfer.setData('text/plain', 'asset:' + asset.id);
                 e.dataTransfer.effectAllowed = 'copy';
             });
+            
             const del = document.createElement('button');
             del.textContent = '✕';
             del.className = 'asset-del';
+            del.style.color = '#aa4444';
             del.addEventListener('click', (e) => {
                 e.stopPropagation();
-                state.assets = state.assets.filter(a => a.id !== asset.id);
+                // Remove asset and revoke blob URL
+                const assetId = asset.id;
+                if (state.assetBlobMap[assetId]) {
+                    URL.revokeObjectURL(state.assetBlobMap[assetId]);
+                    delete state.assetBlobMap[assetId];
+                }
+                state.assets = state.assets.filter(a => a.id !== assetId);
                 renderAssets();
                 pushHistory();
             });
